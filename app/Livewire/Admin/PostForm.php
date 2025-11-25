@@ -17,12 +17,20 @@ class PostForm extends Component
     public $status = 'draft';
     public $selectedTaxonomies = [];
     public $published_at = null;
+    public $featured_image_path = null;
+    public $meta_title = '';
+    public $meta_description = '';
+    public $meta_keywords = '';
+    public $og_image = null;
 
     protected $rules = [
         'title' => 'required|min:3',
         'slug' => 'required|unique:posts,slug',
         'content' => 'nullable|min:5',
         'status' => 'required|in:draft,published,archived',
+        'meta_title' => 'nullable|max:60',
+        'meta_description' => 'nullable|max:160',
+        'meta_keywords' => 'nullable|max:255',
     ];
 
     public function mount($postId = null)
@@ -43,6 +51,11 @@ class PostForm extends Component
             $this->status = $post->status;
             $this->published_at = $post->published_at;
             $this->selectedTaxonomies = $post->taxonomies->pluck('id')->toArray();
+            $this->featured_image_path = $post->featured_image_path;
+            $this->meta_title = $post->meta_title;
+            $this->meta_description = $post->meta_description;
+            $this->meta_keywords = $post->meta_keywords;
+            $this->og_image = $post->og_image;
         }
     }
 
@@ -63,6 +76,11 @@ class PostForm extends Component
             'content' => $this->content,
             'status' => $this->status,
             'published_at' => $this->status === 'published' ? now() : null,
+            'featured_image_path' => $this->featured_image_path,
+            'meta_title' => $this->meta_title ?: $this->title,
+            'meta_description' => $this->meta_description,
+            'meta_keywords' => $this->meta_keywords,
+            'og_image' => $this->og_image,
         ];
 
         if ($this->postId) {
@@ -88,7 +106,7 @@ class PostForm extends Component
 
     public function render()
     {
-        return view('livewire.admin.posts.form', [
+        return view('livewire.admin.posts.form-enhanced', [
             'taxonomies' => $this->getTaxonomiesProperty(),
         ]);
     }

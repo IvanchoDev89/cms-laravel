@@ -11,7 +11,8 @@ class Page extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'user_id', 'title', 'slug', 'content', 'excerpt', 'meta'
+        'user_id', 'title', 'slug', 'content', 'excerpt', 'meta',
+        'featured_image_path', 'meta_title', 'meta_description', 'meta_keywords', 'og_image'
     ];
 
     protected $casts = [
