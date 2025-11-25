@@ -18,6 +18,9 @@ class DashboardAnalytics extends Component
     public $storageUsage = 0;
     public $topPosts = [];
     public $uniqueVisitors = 0;
+    public $postsTrend = 0;
+    public $usersTrend = 0;
+    public $viewsTrend = 0;
 
     public function mount()
     {
@@ -42,6 +45,7 @@ class DashboardAnalytics extends Component
         $this->loadTopPosts();
         $this->loadUniqueVisitors();
         $this->loadStorageUsage();
+        $this->loadTrendMetrics();
     }
 
     protected function loadOverview()
@@ -126,9 +130,33 @@ class DashboardAnalytics extends Component
         return sprintf("%.{$decimals}f %s", $bytes / pow(1024, $factor), $sz[$factor]);
     }
 
+    protected function loadTrendMetrics()
+    {
+        // Posts trend (compare last 7 days with previous 7 days)
+        $lastWeek = Post::where('status', 'published')
+            ->whereBetween('published_at', [now()->subDays(14), now()->subDays(7)])
+            ->count();
+        $thisWeek = Post::where('status', 'published')
+            ->whereBetween('published_at', [now()->subDays(7), now()])
+            ->count();
+        $this->postsTrend = $lastWeek > 0 ? (($thisWeek - $lastWeek) / $lastWeek) * 100 : 0;
+
+        // Users trend (compare last 30 days with previous 30 days)
+        $lastMonth = User::whereBetween('created_at', [now()->subDays(60), now()->subDays(30)])->count();
+        $thisMonth = User::whereBetween('created_at', [now()->subDays(30), now()])->count();
+        $this->usersTrend = $lastMonth > 0 ? (($thisMonth - $lastMonth) / $lastMonth) * 100 : 0;
+
+        // Views trend
+        $lastMonthViews = \App\Models\PostView::where('created_at', '>=', now()->subDays(60))
+            ->where('created_at', '<', now()->subDays(30))
+            ->count();
+        $thisMonthViews = \App\Models\PostView::where('created_at', '>=', now()->subDays(30))->count();
+        $this->viewsTrend = $lastMonthViews > 0 ? (($thisMonthViews - $lastMonthViews) / $lastMonthViews) * 100 : 0;
+    }
+
     public function render()
     {
-        return view('livewire.admin.dashboard-analytics', [
+        return view('livewire.admin.dashboard-analytics-enhanced', [
             'overview' => $this->overview,
             'postsLast7' => $this->postsLast7,
             'usersLast30' => $this->usersLast30,
@@ -137,6 +165,9 @@ class DashboardAnalytics extends Component
             'topPosts' => $this->topPosts,
             'uniqueVisitors' => $this->uniqueVisitors,
             'storageUsage' => $this->humanFilesize($this->storageUsage),
+            'postsTrend' => $this->postsTrend,
+            'usersTrend' => $this->usersTrend,
+            'viewsTrend' => $this->viewsTrend,
         ]);
     }
 }
