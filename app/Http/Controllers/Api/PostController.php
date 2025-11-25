@@ -3,31 +3,55 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Post;
+use App\Http\Resources\PostResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {
+    /**
+     * Get paginated list of published posts with optional filtering
+     * 
+     * Query parameters:
+     * - search: Search posts by title
+     * - category: Filter by category slug
+     * - per_page: Items per page (default: 15, max: 100)
+     * - page: Page number for pagination
+     * - sort: Sort by 'published_at' (default) or 'popular'
+     */
     public function index(Request $request)
     {
-        $posts = Post::where('status', 'published')
-            ->when($request->search, fn ($q) => $q->where('title', 'like', "%{$request->search}%"))
-            ->when($request->category, fn ($q) => $q->whereHas('taxonomies', fn ($t) => $t->where('slug', $request->category)))
-            ->with(['author', 'taxonomies'])
-            ->latest('published_at')
-            ->paginate($request->per_page ?? 15);
+        $per_page = min($request->per_page ?? 15, 100);
         
-        return response()->json($posts);
+        $posts = Post::where('status', 'published')
+            ->when($request->search, fn ($q) => $q->where('title', 'like', "%{$request->search}%")
+                ->orWhere('content', 'like', "%{$request->search}%"))
+            ->when($request->category, fn ($q) => $q->whereHas('taxonomies', fn ($t) => $t->where('slug', $request->category)))
+            ->with(['author', 'taxonomies', 'media', 'views'])
+            ->when($request->sort === 'popular', fn ($q) => $q->withCount('views')->orderByDesc('views_count'), fn ($q) => $q->latest('published_at'))
+            ->paginate($per_page);
+        
+        return PostResource::collection($posts);
     }
 
+    /**
+     * Get a single post by slug
+     * 
+     * Records a view in the database
+     */
     public function show($slug)
     {
         $post = Post::where('slug', $slug)
             ->where('status', 'published')
-            ->with(['author', 'taxonomies', 'media'])
+            ->with(['author', 'taxonomies', 'media', 'views'])
             ->firstOrFail();
         
-        $post->increment('view_count');
-        return response()->json($post);
+        // Record post view
+        $post->views()->create([
+            'ip' => request()->ip(),
+            'user_agent' => request()->header('User-Agent'),
+        ]);
+        
+        return new PostResource($post);
     }
 }
