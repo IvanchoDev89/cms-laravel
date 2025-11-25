@@ -1,0 +1,1 @@
+<livewire:admin.posts-index />
