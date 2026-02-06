@@ -2,13 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\User;
-use App\Models\Wallet;
-use App\Models\Transaction;
+use App\Models\CommissionSetting;
 use App\Models\Payment;
 use App\Models\Subscription;
-use App\Models\CommissionSetting;
-use Exception;
+use App\Models\Transaction;
+use App\Models\User;
+use App\Models\Wallet;
 
 class WalletService
 {
@@ -21,14 +20,14 @@ class WalletService
     {
         // Create a virtual admin user or use a dedicated admin wallet
         $admin = User::where('email', 'admin@system.com')->first();
-        if (!$admin) {
+        if (! $admin) {
             $admin = User::create([
                 'name' => 'System Admin',
                 'email' => 'admin@system.com',
                 'password' => bcrypt('system_admin_password'),
             ]);
         }
-        
+
         return Wallet::getOrCreateForOwner($admin);
     }
 
@@ -62,7 +61,7 @@ class WalletService
         if ($commissionAmount > 0) {
             $adminTransaction = $adminWallet->credit(
                 $commissionAmount,
-                "Commission from user payment",
+                'Commission from user payment',
                 [
                     'payment_id' => $payment->id,
                     'user_id' => $payment->user_id,
@@ -101,13 +100,13 @@ class WalletService
     public function calculateCommission(Payment $payment): float
     {
         $commissionSetting = $this->getApplicableCommissionSetting($payment);
-        
-        if (!$commissionSetting) {
+
+        if (! $commissionSetting) {
             return 0;
         }
 
         $plan = $payment->subscription?->plan;
-        
+
         return $commissionSetting->calculateCommission($payment->amount, $plan);
     }
 
@@ -126,7 +125,7 @@ class WalletService
 
     private function isSettingApplicable(CommissionSetting $setting, Payment $payment): bool
     {
-        return match($setting->applies_to) {
+        return match ($setting->applies_to) {
             'all_users' => true,
             'specific_plans' => $this->paymentMatchesPlan($setting, $payment),
             'content_creators' => $this->userIsContentCreator($payment->user),
@@ -136,12 +135,12 @@ class WalletService
 
     private function paymentMatchesPlan(CommissionSetting $setting, Payment $payment): bool
     {
-        if (!$setting->applicable_plans) {
+        if (! $setting->applicable_plans) {
             return false;
         }
 
         $plan = $payment->subscription?->plan;
-        
+
         return $plan && in_array($plan->id, $setting->applicable_plans);
     }
 
@@ -149,14 +148,14 @@ class WalletService
     {
         // Check if user has content creator subscription or role
         $subscription = $user->subscriptions()->active()->first();
-        
+
         return $subscription && $subscription->plan->can_create_private_content;
     }
 
     private function getCommissionRate(Payment $payment): ?float
     {
         $setting = $this->getApplicableCommissionSetting($payment);
-        
+
         return $setting?->rate;
     }
 
@@ -183,19 +182,19 @@ class WalletService
     public function getTransactionHistory(Wallet $wallet, int $limit = 50)
     {
         return $wallet->transactions()
-                     ->orderBy('created_at', 'desc')
-                     ->limit($limit)
-                     ->get();
+            ->orderBy('created_at', 'desc')
+            ->limit($limit)
+            ->get();
     }
 
     public function getCommissionStats(\DateTime $from, \DateTime $to): array
     {
         $adminWallet = $this->getAdminWallet();
-        
+
         $commissions = $adminWallet->transactions()
-                                   ->commissions()
-                                   ->whereBetween('processed_at', [$from, $to])
-                                   ->get();
+            ->commissions()
+            ->whereBetween('processed_at', [$from, $to])
+            ->get();
 
         return [
             'total_commissions' => $commissions->sum('amount'),

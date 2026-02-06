@@ -107,6 +107,7 @@ class User extends Authenticatable
         if (is_string($roles)) {
             return $this->roles()->where('name', $roles)->exists();
         }
+
         return $this->roles()->whereIn('name', $roles)->exists();
     }
 
@@ -136,7 +137,7 @@ class User extends Authenticatable
         if (is_string($role)) {
             $role = Role::where('name', $role)->firstOrFail();
         }
-        if (!$this->roles()->where('role_id', $role->id)->exists()) {
+        if (! $this->roles()->where('role_id', $role->id)->exists()) {
             $this->roles()->attach($role);
         }
     }
@@ -157,7 +158,7 @@ class User extends Authenticatable
      */
     public function getPublicProfile(): array
     {
-        if (!$this->show_profile_publicly) {
+        if (! $this->show_profile_publicly) {
             return [];
         }
 
@@ -182,7 +183,7 @@ class User extends Authenticatable
             $data['phone'] = $this->phone;
         }
 
-        return array_filter($data, fn($value) => !is_null($value));
+        return array_filter($data, fn ($value) => ! is_null($value));
     }
 
     /**
@@ -190,9 +191,9 @@ class User extends Authenticatable
      */
     public function hasCompletePublicProfile(): bool
     {
-        return $this->show_profile_publicly && 
-               !empty($this->bio) && 
-               !empty($this->name);
+        return $this->show_profile_publicly &&
+               ! empty($this->bio) &&
+               ! empty($this->name);
     }
 
     /**
@@ -205,7 +206,7 @@ class User extends Authenticatable
         }
 
         // Default avatar
-        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';
     }
 
     /**

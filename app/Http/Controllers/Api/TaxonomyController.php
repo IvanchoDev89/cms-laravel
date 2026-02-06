@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Taxonomy;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class TaxonomyController extends Controller
 {
@@ -13,7 +13,7 @@ class TaxonomyController extends Controller
         $taxonomies = Taxonomy::when($request->type, fn ($q) => $q->where('type', $request->type))
             ->with('posts')
             ->get();
-        
+
         return response()->json($taxonomies);
     }
 
@@ -22,7 +22,7 @@ class TaxonomyController extends Controller
         $taxonomy = Taxonomy::where('slug', $slug)
             ->with('posts')
             ->firstOrFail();
-        
+
         return response()->json($taxonomy);
     }
 }

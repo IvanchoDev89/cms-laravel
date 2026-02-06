@@ -3,20 +3,29 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Page;
-use Livewire\Component;
 use Illuminate\Support\Str;
+use Livewire\Component;
 
 class PageForm extends Component
 {
     public $pageId = null;
+
     public $title = '';
+
     public $slug = '';
+
     public $excerpt = '';
+
     public $content = '';
+
     public $featured_image_path = null;
+
     public $meta_title = '';
+
     public $meta_description = '';
+
     public $meta_keywords = '';
+
     public $og_image = null;
 
     protected $rules = [
@@ -30,8 +39,8 @@ class PageForm extends Component
 
     public function mount($pageId = null)
     {
-        if (!auth()->check() || !auth()->user()->hasPermission('posts.create')) {
-            if (!($pageId && auth()->user()?->hasPermission('posts.edit'))) {
+        if (! auth()->check() || ! auth()->user()->hasPermission('posts.create')) {
+            if (! ($pageId && auth()->user()?->hasPermission('posts.edit'))) {
                 abort(403, 'Unauthorized');
             }
         }

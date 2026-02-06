@@ -52,7 +52,7 @@ class ContentAccess extends Model
         }
 
         // If no user provided, deny access
-        if (!$user) {
+        if (! $user) {
             return false;
         }
 
@@ -66,14 +66,14 @@ class ContentAccess extends Model
         }
 
         // If subscription is not required, allow access
-        if (!$this->requires_subscription) {
+        if (! $this->requires_subscription) {
             return true;
         }
 
         // Check user's subscription
         $subscription = $user->subscriptions()->active()->first();
-        
-        if (!$subscription) {
+
+        if (! $subscription) {
             return false;
         }
 
@@ -85,7 +85,7 @@ class ContentAccess extends Model
         // Check if user has required features
         if ($this->required_features) {
             foreach ($this->required_features as $feature) {
-                if (!$subscription->canAccessFeature($feature)) {
+                if (! $subscription->canAccessFeature($feature)) {
                     return false;
                 }
             }
@@ -96,7 +96,7 @@ class ContentAccess extends Model
 
     public function getAccessLevelTextAttribute(): string
     {
-        return match($this->access_level) {
+        return match ($this->access_level) {
             'free' => 'Free',
             'premium' => 'Premium',
             'exclusive' => 'Exclusive',
@@ -107,8 +107,9 @@ class ContentAccess extends Model
     public function getFormattedPriceAttribute(): ?string
     {
         if ($this->individual_price) {
-            return number_format($this->individual_price, 2) . ' ' . $this->currency;
+            return number_format($this->individual_price, 2).' '.$this->currency;
         }
+
         return null;
     }
 
@@ -131,10 +132,10 @@ class ContentAccess extends Model
     {
         return $query->where(function ($q) {
             $q->whereNull('available_from')
-              ->orWhere('available_from', '<=', now());
+                ->orWhere('available_from', '<=', now());
         })->where(function ($q) {
             $q->whereNull('available_until')
-              ->orWhere('available_until', '>=', now());
+                ->orWhere('available_until', '>=', now());
         });
     }
 }

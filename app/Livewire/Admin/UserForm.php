@@ -2,18 +2,23 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\User;
 use App\Models\Role;
-use Livewire\Component;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Livewire\Component;
 
 class UserForm extends Component
 {
     public $userId = null;
+
     public $name = '';
+
     public $email = '';
+
     public $password = '';
+
     public $passwordConfirmation = '';
+
     public $selectedRoles = [];
 
     protected $rules = [
@@ -25,7 +30,7 @@ class UserForm extends Component
 
     public function mount($userId = null)
     {
-        if (!auth()->check() || !auth()->user()->hasPermission('users.manage')) {
+        if (! auth()->check() || ! auth()->user()->hasPermission('users.manage')) {
             abort(403, 'Unauthorized');
         }
 
@@ -76,7 +81,7 @@ class UserForm extends Component
 
             $this->redirect(route('admin.users.index'));
         } catch (\Exception $e) {
-            session()->flash('error', 'Error saving user: ' . $e->getMessage());
+            session()->flash('error', 'Error saving user: '.$e->getMessage());
         }
     }
 

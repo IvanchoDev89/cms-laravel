@@ -12,7 +12,7 @@ class Page extends Model
 
     protected $fillable = [
         'user_id', 'title', 'slug', 'content', 'excerpt', 'meta',
-        'featured_image_path', 'meta_title', 'meta_description', 'meta_keywords', 'og_image'
+        'featured_image_path', 'meta_title', 'meta_description', 'meta_keywords', 'og_image',
     ];
 
     protected $casts = [

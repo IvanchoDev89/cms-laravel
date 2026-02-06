@@ -11,8 +11,11 @@ class MediaUploader extends Component
     use WithFileUploads;
 
     public $file;
+
     public $isUploading = false;
+
     public $uploadProgress = 0;
+
     public $uploadedMedia = null;
 
     public function upload()
@@ -40,7 +43,7 @@ class MediaUploader extends Component
             $this->dispatch('media-uploaded', media: $this->uploadedMedia->id);
             $this->file = null;
         } catch (\Exception $e) {
-            $this->addError('file', 'Error uploading file: ' . $e->getMessage());
+            $this->addError('file', 'Error uploading file: '.$e->getMessage());
         }
 
         $this->isUploading = false;

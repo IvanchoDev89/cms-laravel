@@ -3,8 +3,8 @@
 namespace App\Livewire\Components;
 
 use App\Models\Media;
-use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Component;
 use Livewire\WithPagination;
 
 class MediaManager extends Component
@@ -12,6 +12,7 @@ class MediaManager extends Component
     use WithPagination;
 
     public $search = '';
+
     public $perPage = 12;
 
     #[On('media-uploaded')]

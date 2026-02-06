@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\User;
 use App\Models\Role;
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,14 +12,18 @@ class UsersIndex extends Component
     use WithPagination;
 
     public $search = '';
+
     public $roleFilter = '';
+
     public $perPage = 10;
+
     public $showDeleteModal = false;
+
     public $userToDelete = null;
 
     public function mount()
     {
-        if (!auth()->check() || !auth()->user()->hasPermission('users.view')) {
+        if (! auth()->check() || ! auth()->user()->hasPermission('users.view')) {
             abort(403, 'Unauthorized');
         }
     }
@@ -36,15 +40,16 @@ class UsersIndex extends Component
 
     public function deleteUser($id)
     {
-        if (!auth()->user()->hasPermission('users.manage')) {
+        if (! auth()->user()->hasPermission('users.manage')) {
             return;
         }
 
         $user = User::findOrFail($id);
-        
+
         // Prevent deleting your own account
         if ($user->id === auth()->id()) {
             session()->flash('error', 'Cannot delete your own account');
+
             return;
         }
 
@@ -54,7 +59,7 @@ class UsersIndex extends Component
 
     public function confirmDelete($id)
     {
-        if (!auth()->user()->hasPermission('users.manage')) {
+        if (! auth()->user()->hasPermission('users.manage')) {
             return;
         }
 

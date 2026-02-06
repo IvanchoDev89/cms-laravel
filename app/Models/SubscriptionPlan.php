@@ -47,12 +47,12 @@ class SubscriptionPlan extends Model
 
     public function getFormattedPriceAttribute(): string
     {
-        return number_format($this->price, 2) . ' ' . $this->currency;
+        return number_format($this->price, 2).' '.$this->currency;
     }
 
     public function getBillingCycleTextAttribute(): string
     {
-        return match($this->billing_cycle) {
+        return match ($this->billing_cycle) {
             'monthly' => 'per month',
             'yearly' => 'per year',
             'lifetime' => 'one-time',

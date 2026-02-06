@@ -21,17 +21,17 @@ class ImageUploadController extends Controller
         ]);
 
         // Check permission
-        if (!auth()->user()->hasPermission('media.upload')) {
+        if (! auth()->user()->hasPermission('media.upload')) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
         try {
             $file = $request->file('image');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            
+            $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
+
             // Store file
             $path = $file->storeAs('posts', $filename, 'public');
-            
+
             // Create media record
             $media = Media::create([
                 'user_id' => auth()->id(),
@@ -50,7 +50,7 @@ class ImageUploadController extends Controller
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Upload failed: ' . $e->getMessage(),
+                'error' => 'Upload failed: '.$e->getMessage(),
             ], 500);
         }
     }

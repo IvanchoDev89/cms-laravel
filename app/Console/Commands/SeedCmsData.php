@@ -2,15 +2,16 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\Post;
 use App\Models\Page;
+use App\Models\Post;
 use App\Models\Taxonomy;
 use App\Models\User;
+use Illuminate\Console\Command;
 
 class SeedCmsData extends Command
 {
     protected $signature = 'cms:seed';
+
     protected $description = 'Seed CMS data for testing';
 
     public function handle()
@@ -68,7 +69,7 @@ class SeedCmsData extends Command
             );
 
             $post->taxonomies()->sync([
-                Taxonomy::where('type', 'category')->first()->id
+                Taxonomy::where('type', 'category')->first()->id,
             ]);
         }
 

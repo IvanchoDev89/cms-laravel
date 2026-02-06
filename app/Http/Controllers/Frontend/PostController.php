@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\Taxonomy;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {
@@ -17,9 +17,9 @@ class PostController extends Controller
             ->with(['author', 'taxonomies'])
             ->latest('published_at')
             ->paginate(12);
-        
+
         $categories = Taxonomy::where('type', 'category')->get();
-        
+
         return view('frontend.posts.index', compact('posts', 'categories'));
     }
 
@@ -49,7 +49,7 @@ class PostController extends Controller
             ->latest('published_at')
             ->limit(3)
             ->get();
-        
+
         return view('frontend.posts.show', compact('post', 'relatedPosts'));
     }
 }

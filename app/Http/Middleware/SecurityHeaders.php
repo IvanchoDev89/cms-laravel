@@ -16,7 +16,7 @@ class SecurityHeaders
         $response = $next($request);
 
         // Only add headers to actual responses, not to Livewire component responses
-        if (!$this->isLivewireRequest($request) && $response instanceof Response) {
+        if (! $this->isLivewireRequest($request) && $response instanceof Response) {
             // Prevent clickjacking
             $response->headers->set('X-Frame-Options', 'DENY');
 

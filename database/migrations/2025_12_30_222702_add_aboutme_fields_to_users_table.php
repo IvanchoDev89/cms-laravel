@@ -47,7 +47,7 @@ return new class extends Migration
                 'profile_image_path',
                 'show_profile_publicly',
                 'show_email_publicly',
-                'show_phone_publicly'
+                'show_phone_publicly',
             ]);
         });
     }

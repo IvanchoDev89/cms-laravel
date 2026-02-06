@@ -52,7 +52,7 @@ class Subscription extends Model
 
     public function isActive(): bool
     {
-        return $this->status === 'active' && 
+        return $this->status === 'active' &&
                ($this->ends_at === null || $this->ends_at->isFuture());
     }
 
@@ -69,10 +69,10 @@ class Subscription extends Model
     public function scopeActive($query)
     {
         return $query->where('status', 'active')
-                    ->where(function ($q) {
-                        $q->whereNull('ends_at')
-                          ->orWhere('ends_at', '>', now());
-                    });
+            ->where(function ($q) {
+                $q->whereNull('ends_at')
+                    ->orWhere('ends_at', '>', now());
+            });
     }
 
     public function scopeForUser($query, $userId)
@@ -82,11 +82,11 @@ class Subscription extends Model
 
     public function canAccessFeature(string $feature): bool
     {
-        if (!$this->isActive()) {
+        if (! $this->isActive()) {
             return false;
         }
 
-        return match($feature) {
+        return match ($feature) {
             'premium_content' => $this->plan->can_access_premium_content,
             'private_content' => $this->plan->can_create_private_content,
             'comment_moderation' => $this->plan->can_moderate_comments,

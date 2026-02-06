@@ -43,12 +43,14 @@ class Message extends Model
 
     public function markAsRead(): bool
     {
-        if (!$this->is_read) {
+        if (! $this->is_read) {
             $this->is_read = true;
             $this->read_at = now();
             $this->status = 'read';
+
             return $this->save();
         }
+
         return false;
     }
 
@@ -64,7 +66,7 @@ class Message extends Model
 
     public function hasAttachments(): bool
     {
-        return !empty($this->attachments);
+        return ! empty($this->attachments);
     }
 
     public function getAttachmentCountAttribute(): int

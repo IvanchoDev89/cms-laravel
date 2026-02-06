@@ -17,8 +17,8 @@ class MessageController extends Controller
             ->orderBy('created_at', 'desc')
             ->get()
             ->groupBy(function ($message) {
-                return $message->sender_id === Auth::id() 
-                    ? $message->receiver_id 
+                return $message->sender_id === Auth::id()
+                    ? $message->receiver_id
                     : $message->sender_id;
             });
 

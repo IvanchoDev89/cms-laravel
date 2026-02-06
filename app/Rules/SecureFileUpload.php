@@ -17,7 +17,7 @@ class SecureFileUpload implements ValidationRule
             'mp4', 'avi', 'mov', 'wmv',
             'mp3', 'wav', 'ogg',
             'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx',
-            'txt', 'csv', 'zip', 'rar', '7z'
+            'txt', 'csv', 'zip', 'rar', '7z',
         ],
         private readonly int $maxSize = 10240, // 10MB in KB
         private readonly array $blockedPatterns = [
@@ -37,15 +37,17 @@ class SecureFileUpload implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!$value instanceof UploadedFile) {
+        if (! $value instanceof UploadedFile) {
             $fail('The :attribute must be a file.');
+
             return;
         }
 
         // Check file extension
         $extension = strtolower($value->getClientOriginalExtension());
-        if (!in_array($extension, $this->allowedMimes)) {
-            $fail("The :attribute must be a file of type: " . implode(', ', $this->allowedMimes) . '.');
+        if (! in_array($extension, $this->allowedMimes)) {
+            $fail('The :attribute must be a file of type: '.implode(', ', $this->allowedMimes).'.');
+
             return;
         }
 
@@ -54,6 +56,7 @@ class SecureFileUpload implements ValidationRule
         foreach ($this->blockedPatterns as $pattern) {
             if (preg_match($pattern, $filename)) {
                 $fail('The :attribute contains a potentially dangerous file type.');
+
                 return;
             }
         }
@@ -61,6 +64,7 @@ class SecureFileUpload implements ValidationRule
         // Check file size
         if ($value->getSize() > $this->maxSize * 1024) {
             $fail("The :attribute may not be greater than {$this->maxSize} kilobytes.");
+
             return;
         }
 
@@ -77,9 +81,10 @@ class SecureFileUpload implements ValidationRule
     {
         // Get image info
         $imageInfo = @getimagesize($file->getPathname());
-        
+
         if ($imageInfo === false) {
             $fail('The :attribute appears to be corrupted or is not a valid image.');
+
             return;
         }
 
@@ -87,6 +92,7 @@ class SecureFileUpload implements ValidationRule
         $content = file_get_contents($file->getPathname());
         if (strpos($content, '<?php') !== false) {
             $fail('The :attribute contains potentially malicious content.');
+
             return;
         }
     }

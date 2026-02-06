@@ -10,7 +10,7 @@ class Taxonomy extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'slug', 'type', 'description', 'meta'
+        'name', 'slug', 'type', 'description', 'meta',
     ];
 
     protected $casts = [

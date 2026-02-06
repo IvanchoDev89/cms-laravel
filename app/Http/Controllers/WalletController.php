@@ -2,23 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Wallet;
 use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\WalletService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class WalletController extends Controller
 {
-    public function __construct(private WalletService $walletService)
-    {
-    }
+    public function __construct(private WalletService $walletService) {}
 
     public function index()
     {
         $wallet = $this->walletService->getUserWallet(Auth::user());
         $transactions = $this->walletService->getTransactionHistory($wallet);
-        
+
         return view('wallet.index', compact('wallet', 'transactions'));
     }
 
@@ -29,8 +27,8 @@ class WalletController extends Controller
         }
 
         $transactions = $wallet->transactions()
-                              ->orderBy('created_at', 'desc')
-                              ->paginate(20);
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
 
         return view('wallet.show', compact('wallet', 'transactions'));
     }
@@ -38,7 +36,7 @@ class WalletController extends Controller
     public function withdraw(Request $request)
     {
         $request->validate([
-            'amount' => 'required|numeric|min:1|max:' . $this->walletService->getWalletBalance($this->walletService->getUserWallet(Auth::user())),
+            'amount' => 'required|numeric|min:1|max:'.$this->walletService->getWalletBalance($this->walletService->getUserWallet(Auth::user())),
             'description' => 'required|string|max:255',
         ]);
 
@@ -53,7 +51,7 @@ class WalletController extends Controller
 
             return back()->with('success', 'Withdrawal processed successfully.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Withdrawal failed: ' . $e->getMessage());
+            return back()->with('error', 'Withdrawal failed: '.$e->getMessage());
         }
     }
 
@@ -68,10 +66,10 @@ class WalletController extends Controller
         );
 
         $recentCommissions = Transaction::where('wallet_id', $adminWallet->id)
-                                       ->commissions()
-                                       ->orderBy('created_at', 'desc')
-                                       ->limit(10)
-                                       ->get();
+            ->commissions()
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
 
         return view('wallet.admin-dashboard', compact(
             'adminWallet',
@@ -116,15 +114,15 @@ class WalletController extends Controller
     public function earningsReport(Request $request)
     {
         $wallet = $this->walletService->getUserWallet(Auth::user());
-        
+
         $from = $request->get('from') ? new \DateTime($request->get('from')) : now()->subMonth();
         $to = $request->get('to') ? new \DateTime($request->get('to')) : now();
 
         $transactions = $wallet->transactions()
-                              ->credits()
-                              ->whereBetween('processed_at', [$from, $to])
-                              ->orderBy('processed_at', 'desc')
-                              ->get();
+            ->credits()
+            ->whereBetween('processed_at', [$from, $to])
+            ->orderBy('processed_at', 'desc')
+            ->get();
 
         $totalEarnings = $transactions->sum('amount');
         $totalCommissions = $transactions->sum('commission_amount');

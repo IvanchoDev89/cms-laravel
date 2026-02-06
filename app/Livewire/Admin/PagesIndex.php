@@ -11,8 +11,11 @@ class PagesIndex extends Component
     use WithPagination;
 
     public $search = '';
+
     public $status = '';
+
     public $sortBy = 'created_at';
+
     public $perPage = 10;
 
     public function mount()

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Post;
 use App\Models\Page;
+use App\Models\Post;
 use App\Models\Taxonomy;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -125,17 +125,17 @@ class SampleContentSeeder extends Seeder
 
             if ($post->slug === 'getting-started-laravel-12') {
                 $attachments = array_filter([$techCategory?->id, $devCategory?->id, $laravelTag?->id, $phpTag?->id, $tutorialTag?->id]);
-                if (!empty($attachments)) {
+                if (! empty($attachments)) {
                     $post->taxonomies()->syncWithoutDetaching($attachments);
                 }
             } elseif ($post->slug === 'modern-ui-ux-design-principles') {
                 $attachments = array_filter([$designCategory?->id, $uxTag?->id, $tutorialTag?->id]);
-                if (!empty($attachments)) {
+                if (! empty($attachments)) {
                     $post->taxonomies()->syncWithoutDetaching($attachments);
                 }
             } elseif ($post->slug === 'building-scalable-web-applications') {
                 $attachments = array_filter([$techCategory?->id, $devCategory?->id]);
-                if (!empty($attachments)) {
+                if (! empty($attachments)) {
                     $post->taxonomies()->syncWithoutDetaching($attachments);
                 }
             }

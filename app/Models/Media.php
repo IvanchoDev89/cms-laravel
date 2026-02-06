@@ -13,7 +13,7 @@ class Media extends Model
     protected $table = 'media';
 
     protected $fillable = [
-        'user_id', 'filename', 'path', 'disk', 'mime_type', 'size', 'meta'
+        'user_id', 'filename', 'path', 'disk', 'mime_type', 'size', 'meta',
     ];
 
     protected $casts = [

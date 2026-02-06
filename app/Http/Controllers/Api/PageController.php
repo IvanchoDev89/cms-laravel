@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Page;
-use App\Http\Resources\PageResource;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PageResource;
+use App\Models\Page;
+use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
     /**
      * Get paginated list of pages with optional filtering
-     * 
+     *
      * Query parameters:
      * - search: Search pages by title or content
      * - per_page: Items per page (default: 20, max: 100)
@@ -19,13 +19,13 @@ class PageController extends Controller
     public function index(Request $request)
     {
         $per_page = min($request->per_page ?? 20, 100);
-        
+
         $pages = Page::when($request->search, fn ($q) => $q->where('title', 'like', "%{$request->search}%")
-                ->orWhere('content', 'like', "%{$request->search}%"))
+            ->orWhere('content', 'like', "%{$request->search}%"))
             ->with(['author', 'media'])
             ->latest()
             ->paginate($per_page);
-        
+
         return PageResource::collection($pages);
     }
 
@@ -37,7 +37,7 @@ class PageController extends Controller
         $page = Page::where('slug', $slug)
             ->with(['author', 'media'])
             ->firstOrFail();
-        
+
         return new PageResource($page);
     }
 }

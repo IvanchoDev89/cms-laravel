@@ -63,7 +63,7 @@ class Payment extends Model
 
     public function getFormattedAmountAttribute(): string
     {
-        return number_format($this->amount, 2) . ' ' . $this->currency;
+        return number_format($this->amount, 2).' '.$this->currency;
     }
 
     public function scopeCompleted($query)

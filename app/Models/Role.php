@@ -46,7 +46,7 @@ class Role extends Model
             $permission = Permission::where('name', $permission)->firstOrFail();
         }
 
-        if (!$this->permissions()->where('permission_id', $permission->id)->exists()) {
+        if (! $this->permissions()->where('permission_id', $permission->id)->exists()) {
             $this->permissions()->attach($permission);
         }
     }

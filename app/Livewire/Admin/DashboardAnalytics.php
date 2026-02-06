@@ -2,24 +2,34 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Media;
 use App\Models\Post;
 use App\Models\User;
-use App\Models\Media;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class DashboardAnalytics extends Component
 {
     public $postsLast7 = [];
+
     public $usersLast30 = [];
+
     public $overview = [];
+
     public $recentPosts = [];
+
     public $topAuthors = [];
+
     public $storageUsage = 0;
+
     public $topPosts = [];
+
     public $uniqueVisitors = 0;
+
     public $postsTrend = 0;
+
     public $usersTrend = 0;
+
     public $viewsTrend = 0;
 
     public function mount()
@@ -34,7 +44,7 @@ class DashboardAnalytics extends Component
         ];
 
         // Only load analytics for admin users
-        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+        if (! auth()->check() || ! auth()->user()->hasRole('admin')) {
             $this->postsLast7 = [];
             $this->usersLast30 = [];
             $this->recentPosts = [];
@@ -45,6 +55,7 @@ class DashboardAnalytics extends Component
             $this->postsTrend = 0;
             $this->usersTrend = 0;
             $this->viewsTrend = 0;
+
             return;
         }
 
@@ -96,12 +107,12 @@ class DashboardAnalytics extends Component
 
     protected function loadRecentPosts()
     {
-        $this->recentPosts = Post::latest()->take(6)->get(['id','title','slug','status','published_at']);
+        $this->recentPosts = Post::latest()->take(6)->get(['id', 'title', 'slug', 'status', 'published_at']);
     }
 
     protected function loadTopAuthors()
     {
-        $this->topAuthors = User::withCount(['posts'])->orderByDesc('posts_count')->take(5)->get(['id','name']);
+        $this->topAuthors = User::withCount(['posts'])->orderByDesc('posts_count')->take(5)->get(['id', 'name']);
     }
 
     protected function loadTopPosts()
@@ -109,7 +120,7 @@ class DashboardAnalytics extends Component
         // Top posts by views in the last 30 days
         $this->topPosts = Post::withCount(['views as views_count' => function ($q) {
             $q->where('created_at', '>=', now()->subDays(30));
-        }])->orderByDesc('views_count')->take(6)->get(['id','title','slug']);
+        }])->orderByDesc('views_count')->take(6)->get(['id', 'title', 'slug']);
     }
 
     protected function loadUniqueVisitors()
@@ -136,8 +147,9 @@ class DashboardAnalytics extends Component
 
     protected function humanFilesize($bytes, $decimals = 2)
     {
-        $sz = ['B','KB','MB','GB','TB'];
+        $sz = ['B', 'KB', 'MB', 'GB', 'TB'];
         $factor = floor((strlen($bytes) - 1) / 3);
+
         return sprintf("%.{$decimals}f %s", $bytes / pow(1024, $factor), $sz[$factor]);
     }
 

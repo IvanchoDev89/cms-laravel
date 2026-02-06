@@ -1,15 +1,15 @@
 <?php
 
+use App\Http\Controllers\Frontend\AboutmeController;
+use App\Http\Controllers\Frontend\PageController;
+use App\Http\Controllers\Frontend\PostController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
-use App\Http\Controllers\SubscriptionController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\MessageController;
-use App\Http\Controllers\WalletController;
-use App\Http\Controllers\Frontend\AboutmeController;
-use App\Http\Controllers\Frontend\PostController;
-use App\Http\Controllers\Frontend\PageController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,16 +21,16 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/login', function () {
         return view('livewire.auth.login');
     })->name('login');
-    
+
     Route::post('/login', function () {
         $credentials = request()->only(['email', 'password']);
-        
+
         if (auth()->attempt($credentials, request()->boolean('remember'))) {
             request()->session()->regenerate();
-            
+
             return redirect()->intended(route('dashboard'));
         }
-        
+
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->withInput(request()->only('email'));
@@ -40,7 +40,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/register', function () {
         return view('livewire.auth.register');
     })->name('register');
-    
+
     Route::post('/register', function () {
         $validated = request()->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -57,7 +57,7 @@ Route::middleware(['guest'])->group(function () {
 
         auth()->login($user);
         request()->session()->regenerate();
-        
+
         return redirect(route('dashboard'));
     })->name('register.store');
 
@@ -72,6 +72,7 @@ Route::post('/logout', function () {
     auth()->logout();
     request()->session()->invalidate();
     request()->session()->regenerateToken();
+
     return redirect('/');
 })->name('logout');
 
@@ -120,7 +121,7 @@ Route::get('/dashboard', function () {
     ->name('dashboard');
 
 // Test routes outside auth middleware
-Route::get('test-simple', function() {
+Route::get('test-simple', function () {
     return 'Simple test route working';
 });
 

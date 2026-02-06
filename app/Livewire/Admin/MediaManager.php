@@ -13,11 +13,17 @@ class MediaManager extends Component
     use WithFileUploads, WithPagination;
 
     public $file;
+
     public $search = '';
+
     public $perPage = 20;
+
     public $selectedMedia = [];
+
     public $showUploadModal = false;
+
     public $showDeleteModal = false;
+
     public $mediaToDelete = null;
 
     protected $paginationTheme = 'bootstrap';
@@ -25,7 +31,7 @@ class MediaManager extends Component
     protected function rules(): array
     {
         return [
-            'file' => ['required', 'file', new SecureFileUpload()],
+            'file' => ['required', 'file', new SecureFileUpload],
         ];
     }
 
@@ -34,7 +40,7 @@ class MediaManager extends Component
         $this->validate();
 
         $path = $this->file->store('media', 'public');
-        
+
         Media::create([
             'name' => $this->file->getClientOriginalName(),
             'path' => $path,
@@ -46,7 +52,7 @@ class MediaManager extends Component
 
         $this->file = null;
         $this->showUploadModal = false;
-        
+
         session()->flash('message', 'File uploaded successfully!');
     }
 
@@ -61,27 +67,27 @@ class MediaManager extends Component
         if ($this->mediaToDelete) {
             // Delete file from storage
             \Storage::disk('public')->delete($this->mediaToDelete->path);
-            
+
             // Delete database record
             $this->mediaToDelete->delete();
-            
+
             $this->mediaToDelete = null;
             $this->showDeleteModal = false;
-            
+
             session()->flash('message', 'File deleted successfully!');
         }
     }
 
     public function bulkDelete()
     {
-        if (!empty($this->selectedMedia)) {
+        if (! empty($this->selectedMedia)) {
             $mediaItems = Media::whereIn('id', $this->selectedMedia)->get();
-            
+
             foreach ($mediaItems as $media) {
                 \Storage::disk('public')->delete($media->path);
                 $media->delete();
             }
-            
+
             $this->selectedMedia = [];
             session()->flash('message', 'Selected files deleted successfully!');
         }
@@ -89,9 +95,8 @@ class MediaManager extends Component
 
     public function getMediaProperty()
     {
-        return Media::when($this->search, fn ($query) => 
-                $query->where('name', 'like', "%{$this->search}%")
-            )
+        return Media::when($this->search, fn ($query) => $query->where('name', 'like', "%{$this->search}%")
+        )
             ->latest()
             ->paginate($this->perPage);
     }

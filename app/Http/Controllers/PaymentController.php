@@ -15,7 +15,7 @@ class PaymentController extends Controller
             abort(403);
         }
 
-        return match($gateway) {
+        return match ($gateway) {
             'paypal' => $this->processPayPal($payment),
             'bitcoin' => $this->processBitcoin($payment),
             default => back()->with('error', 'Invalid payment gateway.'),
@@ -71,7 +71,7 @@ class PaymentController extends Controller
     {
         // Mock PayPal payment processing
         // In real implementation, you would integrate PayPal SDK
-        
+
         return view('payments.paypal', compact('payment'));
     }
 
@@ -79,10 +79,10 @@ class PaymentController extends Controller
     {
         // Mock Bitcoin payment processing
         // In real implementation, you would integrate Bitcoin payment processor
-        
+
         $bitcoinAddress = 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh'; // Mock address
         $amount = $payment->amount;
-        
+
         return view('payments.bitcoin', compact('payment', 'bitcoinAddress', 'amount'));
     }
 
@@ -90,7 +90,7 @@ class PaymentController extends Controller
     {
         // Handle webhooks from payment gateways
         // This would verify the webhook signature and update payment status
-        
+
         return response()->json(['status' => 'received']);
     }
 }

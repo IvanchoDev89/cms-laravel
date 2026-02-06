@@ -3,7 +3,6 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -40,7 +39,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // Simple error handling for production
-        if (!app()->environment('local', 'testing')) {
+        if (! app()->environment('local', 'testing')) {
             $exceptions->render(function (\Throwable $e) {
                 if (request()->expectsJson()) {
                     return response()->json([
@@ -48,7 +47,7 @@ return Application::configure(basePath: dirname(__DIR__))
                         'code' => 500,
                     ], 500);
                 }
-                
+
                 return response()->view('errors.500', [], 500);
             });
         }

@@ -43,6 +43,7 @@ class Transaction extends Model
         if ($this->reference_type && $this->reference_id) {
             return $this->belongsTo($this->reference_type, 'reference_id');
         }
+
         return null;
     }
 
@@ -79,14 +80,16 @@ class Transaction extends Model
     public function getFormattedAmountAttribute(): string
     {
         $prefix = $this->isDebit() ? '-' : '+';
-        return $prefix . number_format($this->amount, 2) . ' ' . $this->currency;
+
+        return $prefix.number_format($this->amount, 2).' '.$this->currency;
     }
 
     public function getFormattedCommissionAmountAttribute(): ?string
     {
         if ($this->commission_amount) {
-            return number_format($this->commission_amount, 2) . ' ' . $this->currency;
+            return number_format($this->commission_amount, 2).' '.$this->currency;
         }
+
         return null;
     }
 
@@ -128,6 +131,6 @@ class Transaction extends Model
     public function scopeWithReference($query, string $referenceType, $referenceId)
     {
         return $query->where('reference_type', $referenceType)
-                    ->where('reference_id', $referenceId);
+            ->where('reference_id', $referenceId);
     }
 }

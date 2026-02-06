@@ -2,10 +2,10 @@
 
 namespace App\Listeners;
 
-use Illuminate\Auth\Events\Login;
-use Illuminate\Auth\Events\Logout;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Lockout;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Log;

@@ -33,7 +33,7 @@ class PageResource extends JsonResource
                 'name' => $m->name,
                 'path' => $m->path,
                 'mime_type' => $m->mime_type,
-                'url' => asset('storage/' . $m->path),
+                'url' => asset('storage/'.$m->path),
             ]),
             'seo' => [
                 'meta_title' => $this->meta_title ?? $this->title,

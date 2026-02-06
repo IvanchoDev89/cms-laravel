@@ -78,17 +78,17 @@ class Wallet extends Model
 
     public function getFormattedBalanceAttribute(): string
     {
-        return number_format($this->balance, 2) . ' ' . $this->currency;
+        return number_format($this->balance, 2).' '.$this->currency;
     }
 
     public function getFormattedTotalEarnedAttribute(): string
     {
-        return number_format($this->total_earned, 2) . ' ' . $this->currency;
+        return number_format($this->total_earned, 2).' '.$this->currency;
     }
 
     public function getFormattedTotalWithdrawnAttribute(): string
     {
-        return number_format($this->total_withdrawn, 2) . ' ' . $this->currency;
+        return number_format($this->total_withdrawn, 2).' '.$this->currency;
     }
 
     public function scopeActive($query)
@@ -99,14 +99,14 @@ class Wallet extends Model
     public function scopeForOwner($query, $owner)
     {
         return $query->where('owner_type', get_class($owner))
-                    ->where('owner_id', $owner->id);
+            ->where('owner_id', $owner->id);
     }
 
     public static function getOrCreateForOwner($owner): self
     {
         $wallet = static::forOwner($owner)->first();
-        
-        if (!$wallet) {
+
+        if (! $wallet) {
             $wallet = static::create([
                 'owner_type' => get_class($owner),
                 'owner_id' => $owner->id,

@@ -3,7 +3,6 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Post;
-use App\Models\Taxonomy;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,8 +11,11 @@ class PostsIndex extends Component
     use WithPagination;
 
     public $search = '';
+
     public $status = '';
+
     public $sortBy = 'created_at';
+
     public $perPage = 10;
 
     public function mount()

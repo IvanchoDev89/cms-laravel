@@ -33,18 +33,18 @@ class CommissionSetting extends Model
 
     public function calculateCommission(float $amount, ?SubscriptionPlan $plan = null): float
     {
-        if (!$this->isActive()) {
+        if (! $this->isActive()) {
             return 0;
         }
 
         // Check if commission applies to this plan
         if ($this->applies_to === 'specific_plans' && $plan) {
-            if (!$this->applicable_plans || !in_array($plan->id, $this->applicable_plans)) {
+            if (! $this->applicable_plans || ! in_array($plan->id, $this->applicable_plans)) {
                 return 0;
             }
         }
 
-        return match($this->type) {
+        return match ($this->type) {
             'percentage' => $amount * ($this->rate / 100),
             'fixed' => $this->fixed_amount,
             default => 0,
@@ -53,7 +53,7 @@ class CommissionSetting extends Model
 
     public function isActive(): bool
     {
-        if (!$this->is_active) {
+        if (! $this->is_active) {
             return false;
         }
 
@@ -72,9 +72,9 @@ class CommissionSetting extends Model
 
     public function getFormattedRateAttribute(): string
     {
-        return match($this->type) {
-            'percentage' => $this->rate . '%',
-            'fixed' => '$' . number_format($this->fixed_amount, 2),
+        return match ($this->type) {
+            'percentage' => $this->rate.'%',
+            'fixed' => '$'.number_format($this->fixed_amount, 2),
             default => $this->rate,
         };
     }
@@ -82,14 +82,14 @@ class CommissionSetting extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true)
-                    ->where(function ($q) {
-                        $q->whereNull('effective_from')
-                          ->orWhere('effective_from', '<=', now());
-                    })
-                    ->where(function ($q) {
-                        $q->whereNull('effective_until')
-                          ->orWhere('effective_until', '>=', now());
-                    });
+            ->where(function ($q) {
+                $q->whereNull('effective_from')
+                    ->orWhere('effective_from', '<=', now());
+            })
+            ->where(function ($q) {
+                $q->whereNull('effective_until')
+                    ->orWhere('effective_until', '>=', now());
+            });
     }
 
     public function scopeByName($query, string $name)

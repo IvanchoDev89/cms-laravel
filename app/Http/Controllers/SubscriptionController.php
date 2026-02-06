@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SubscriptionPlan;
-use App\Models\Subscription;
 use App\Models\Payment;
+use App\Models\Subscription;
+use App\Models\SubscriptionPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -15,21 +15,21 @@ class SubscriptionController extends Controller
     {
         $plans = SubscriptionPlan::active()->ordered()->get();
         $userSubscription = Auth::user()?->subscriptions()->active()->first();
-        
+
         return view('subscriptions.index', compact('plans', 'userSubscription'));
     }
 
     public function show(SubscriptionPlan $plan)
     {
         $userSubscription = Auth::user()?->subscriptions()->active()->first();
-        
+
         return view('subscriptions.show', compact('plan', 'userSubscription'));
     }
 
     public function subscribe(Request $request, SubscriptionPlan $plan)
     {
         $user = Auth::user();
-        
+
         // Check if user already has an active subscription
         if ($user->subscriptions()->active()->exists()) {
             return back()->with('error', 'You already have an active subscription.');
@@ -43,7 +43,7 @@ class SubscriptionController extends Controller
             'amount_paid' => $plan->price,
             'currency' => $plan->currency,
             'payment_method' => $request->payment_method,
-            'transaction_id' => 'SUB-' . Str::random(10),
+            'transaction_id' => 'SUB-'.Str::random(10),
             'starts_at' => now(),
             'ends_at' => $plan->billing_cycle === 'lifetime' ? null : now()->addMonth(),
         ]);
@@ -57,11 +57,11 @@ class SubscriptionController extends Controller
             'currency' => $plan->currency,
             'payment_method' => $request->payment_method,
             'status' => 'pending',
-            'transaction_id' => 'PAY-' . Str::random(10),
+            'transaction_id' => 'PAY-'.Str::random(10),
         ]);
 
         // Redirect to appropriate payment gateway
-        return match($request->payment_method) {
+        return match ($request->payment_method) {
             'paypal' => $this->redirectToPayPal($payment),
             'bitcoin' => $this->redirectToBitcoin($payment),
             default => back()->with('error', 'Invalid payment method selected.'),
@@ -88,7 +88,7 @@ class SubscriptionController extends Controller
         // For now, return a mock response
         return redirect()->route('payments.process', [
             'payment' => $payment->id,
-            'gateway' => 'paypal'
+            'gateway' => 'paypal',
         ]);
     }
 
@@ -98,7 +98,7 @@ class SubscriptionController extends Controller
         // For now, return a mock response
         return redirect()->route('payments.process', [
             'payment' => $payment->id,
-            'gateway' => 'bitcoin'
+            'gateway' => 'bitcoin',
         ]);
     }
 }

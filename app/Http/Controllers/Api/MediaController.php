@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Media;
 use App\Rules\SecureFileUpload;
 use Illuminate\Http\Request;
-use App\Models\Media;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -14,18 +14,19 @@ class MediaController extends Controller
     public function index(Request $request)
     {
         $media = Media::latest()->paginate(20);
+
         return response()->json($media);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'file' => ['required', 'file', new SecureFileUpload()]
+            'file' => ['required', 'file', new SecureFileUpload],
         ]);
 
         // Ensure user is authenticated and has upload permission
         $user = $request->user();
-        if (!$user || !$user->hasPermission('media.upload')) {
+        if (! $user || ! $user->hasPermission('media.upload')) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
@@ -49,6 +50,7 @@ class MediaController extends Controller
     public function show($id)
     {
         $media = Media::findOrFail($id);
+
         return response()->json($media);
     }
 
@@ -58,11 +60,11 @@ class MediaController extends Controller
 
         // Authorization: only owner or user with 'media.delete' permission
         $user = request()->user();
-        if (!$user) {
+        if (! $user) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        if ($media->user_id !== $user->id && !$user->hasPermission('media.delete')) {
+        if ($media->user_id !== $user->id && ! $user->hasPermission('media.delete')) {
             return response()->json(['error' => 'Forbidden'], 403);
         }
 
@@ -73,6 +75,7 @@ class MediaController extends Controller
             // ignore
         }
         $media->delete();
+
         return response()->json(['deleted' => true]);
     }
 }

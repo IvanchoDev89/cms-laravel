@@ -4,23 +4,35 @@ namespace App\Livewire\Admin;
 
 use App\Models\Post;
 use App\Models\Taxonomy;
-use Livewire\Component;
 use Illuminate\Support\Str;
+use Livewire\Component;
 
 class PostForm extends Component
 {
     public $postId = null;
+
     public $title = '';
+
     public $slug = '';
+
     public $excerpt = '';
+
     public $content = '';
+
     public $status = 'draft';
+
     public $selectedTaxonomies = [];
+
     public $published_at = null;
+
     public $featured_image_path = null;
+
     public $meta_title = '';
+
     public $meta_description = '';
+
     public $meta_keywords = '';
+
     public $og_image = null;
 
     protected $rules = [
@@ -35,9 +47,9 @@ class PostForm extends Component
 
     public function mount($postId = null)
     {
-        if (!auth()->check() || !auth()->user()->hasPermission('posts.create')) {
+        if (! auth()->check() || ! auth()->user()->hasPermission('posts.create')) {
             // allow viewing for edits if user has edit permission; otherwise block
-            if (!($postId && auth()->user()?->hasPermission('posts.edit'))) {
+            if (! ($postId && auth()->user()?->hasPermission('posts.edit'))) {
                 abort(403, 'Unauthorized');
             }
         }

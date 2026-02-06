@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\CommissionSetting;
+use Illuminate\Database\Seeder;
 
 class CommissionSettingSeeder extends Seeder
 {

@@ -2,7 +2,8 @@
 
 use Livewire\Volt\Component;
 
-new class extends Component {
+new class extends Component
+{
     public $pageId;
 
     public function mount($id)
