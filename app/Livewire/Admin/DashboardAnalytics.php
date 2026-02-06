@@ -24,9 +24,17 @@ class DashboardAnalytics extends Component
 
     public function mount()
     {
-        // Only load analytics for admin users; non-admins will see the dashboard without analytics data.
+        // Set default values for all users
+        $this->overview = [
+            'totalPosts' => 0,
+            'published' => 0,
+            'drafts' => 0,
+            'totalUsers' => 0,
+            'media' => 0,
+        ];
+
+        // Only load analytics for admin users
         if (!auth()->check() || !auth()->user()->hasRole('admin')) {
-            $this->overview = [];
             $this->postsLast7 = [];
             $this->usersLast30 = [];
             $this->recentPosts = [];
@@ -34,6 +42,9 @@ class DashboardAnalytics extends Component
             $this->topPosts = [];
             $this->uniqueVisitors = 0;
             $this->storageUsage = 0;
+            $this->postsTrend = 0;
+            $this->usersTrend = 0;
+            $this->viewsTrend = 0;
             return;
         }
 

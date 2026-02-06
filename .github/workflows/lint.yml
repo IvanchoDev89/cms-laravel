@@ -26,7 +26,16 @@ jobs:
           php-version: '8.4'
 
       - name: Add Flux Credentials Loaded From ENV
-        run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
+        run: |
+          if [ -n "${{ env.FLUX_USERNAME }}" ] && [ -n "${{ env.FLUX_LICENSE_KEY }}" ]; then
+            composer config http-basic.composer.fluxui.dev "${{ env.FLUX_USERNAME }}" "${{ env.FLUX_LICENSE_KEY }}"
+          else
+            echo "Flux credentials not provided, skipping composer config"
+          fi
+        env:
+          FLUX_USERNAME: ${{ secrets.FLUX_USERNAME }}
+          FLUX_LICENSE_KEY: ${{ secrets.FLUX_LICENSE_KEY }}
+        continue-on-error: true
 
       - name: Install Dependencies
         run: |
@@ -36,11 +45,11 @@ jobs:
       - name: Run Pint
         run: vendor/bin/pint
 
-      # - name: Commit Changes
-      #   uses: stefanzweifel/git-auto-commit-action@v7
-      #   with:
-      #     commit_message: fix code style
-      #     commit_options: '--no-verify'
-      #     file_pattern: |
-      #       **/*
-      #       !.github/workflows/*
+      - name: Commit Changes
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: fix code style
+          commit_options: '--no-verify'
+          file_pattern: |
+            **/*
+            !.github/workflows/*

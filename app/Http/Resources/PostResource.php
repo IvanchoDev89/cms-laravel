@@ -43,7 +43,7 @@ class PostResource extends JsonResource
                 'mime_type' => $m->mime_type,
                 'url' => asset('storage/' . $m->path),
             ]),
-            'views_count' => $this->views->count(),
+            'views_count' => $this->views_count ?? 0,
             'seo' => [
                 'meta_title' => $this->meta_title ?? $this->title,
                 'meta_description' => $this->meta_description,

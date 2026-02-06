@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Rules\SecureFileUpload;
 use Illuminate\Http\Request;
 use App\Models\Media;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +20,7 @@ class MediaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:jpg,jpeg,png,gif,svg,webp,mp4,mp3,pdf,doc,docx,zip|max:51200'
+            'file' => ['required', 'file', new SecureFileUpload()]
         ]);
 
         // Ensure user is authenticated and has upload permission

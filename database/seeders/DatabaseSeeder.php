@@ -16,6 +16,9 @@ class DatabaseSeeder extends Seeder
         // Seed roles & permissions
         $this->call(RolePermissionSeeder::class);
 
+        // Seed admin and sample users
+        $this->call(AdminUserSeeder::class);
+
         // Create a default test user
         User::firstOrCreate(
             ['email' => 'test@example.com'],
@@ -25,22 +28,5 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
-
-        // Create an admin user for development if not present
-        $admin = User::firstOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Administrator',
-                'password' => bcrypt('Secret123!'),
-                'email_verified_at' => now(),
-            ]
-        );
-
-        // Assign admin role
-        try {
-            $admin->assignRole('admin');
-        } catch (\Throwable $e) {
-            // ignore if role assignment fails (e.g., during tests)
-        }
     }
 }

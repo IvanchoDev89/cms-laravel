@@ -27,8 +27,9 @@ class PostController extends Controller
             ->when($request->search, fn ($q) => $q->where('title', 'like', "%{$request->search}%")
                 ->orWhere('content', 'like', "%{$request->search}%"))
             ->when($request->category, fn ($q) => $q->whereHas('taxonomies', fn ($t) => $t->where('slug', $request->category)))
-            ->with(['author', 'taxonomies', 'media', 'views'])
-            ->when($request->sort === 'popular', fn ($q) => $q->withCount('views')->orderByDesc('views_count'), fn ($q) => $q->latest('published_at'))
+            ->with(['author', 'taxonomies', 'media'])
+            ->withCount('views')
+            ->when($request->sort === 'popular', fn ($q) => $q->orderByDesc('views_count'), fn ($q) => $q->latest('published_at'))
             ->paginate($per_page);
         
         return PostResource::collection($posts);
@@ -43,14 +44,20 @@ class PostController extends Controller
     {
         $post = Post::where('slug', $slug)
             ->where('status', 'published')
-            ->with(['author', 'taxonomies', 'media', 'views'])
+            ->with(['author', 'taxonomies', 'media'])
+            ->withCount('views')
             ->firstOrFail();
         
         // Record post view
-        $post->views()->create([
-            'ip' => request()->ip(),
-            'user_agent' => request()->header('User-Agent'),
-        ]);
+        try {
+            \App\Models\PostView::create([
+                'post_id' => $post->id,
+                'ip' => request()->ip(),
+                'user_agent' => request()->header('User-Agent'),
+            ]);
+        } catch (\Exception $e) {
+            // Ignore view recording errors
+        }
         
         return new PostResource($post);
     }

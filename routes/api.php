@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AboutmeController;
 use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\PageController;
@@ -61,6 +62,19 @@ Route::prefix('v1')->group(function () {
     Route::get('taxonomies/{slug}', [TaxonomyController::class, 'show']);
 
     /**
+     * About Me API (Public Profiles)
+     * 
+     * GET /aboutme - List all public profiles
+     *   Query parameters:
+     *   - page: int (default: 1)
+     *   - per_page: int (default: 15, max: 100)
+     * 
+     * GET /aboutme/{id} - Get a single public profile by ID
+     */
+    Route::get('aboutme', [AboutmeController::class, 'index']);
+    Route::get('aboutme/{id}', [AboutmeController::class, 'show']);
+
+    /**
      * Media API - Read Only
      * 
      * GET /media - List all public media files
@@ -73,7 +87,7 @@ Route::prefix('v1')->group(function () {
     // AUTHENTICATED ENDPOINTS - Require Sanctum token
     // ============================================================================
     
-    Route::middleware(['auth:sanctum'])->group(function () {
+    Route::middleware(['auth:sanctum', 'throttle:30,1'])->group(function () {
         /**
          * Media API - Write operations
          * Requires 'media.upload' or 'media.delete' permissions

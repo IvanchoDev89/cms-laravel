@@ -6,51 +6,103 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="relative min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-950 dark:to-gray-900 flex items-center">
+<section class="relative min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center overflow-hidden">
+    <!-- Animated Background -->
     <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 dark:opacity-10"></div>
-        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 dark:opacity-10"></div>
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse delay-2000"></div>
     </div>
+
+    <!-- Navigation Grid Pattern -->
+    <div class="absolute inset-0 bg-grid-white/5 bg-grid-16"></div>
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <!-- Left Content -->
-            <div>
-                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
-                    Manage Your Content with <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Ease</span>
+            <div class="space-y-8">
+                <div class="inline-flex items-center px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full">
+                    <span class="text-purple-400 text-sm font-medium">✨ Modern CMS Platform</span>
+                </div>
+                
+                <h1 class="text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+                    Manage Your Content with 
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
+                        Lightning Speed
+                    </span>
                 </h1>
-                <p class="text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
-                    A modern, powerful, and user-friendly CMS built with Laravel. Create, manage, and publish content with confidence.
+                
+                <p class="text-xl text-gray-300 mb-8 leading-relaxed">
+                    A next-generation content management system built with Laravel 12. Create, manage, and publish content with confidence using our powerful, intuitive interface.
                 </p>
+                
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="{{ route('posts.index') }}" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition inline-block text-center">
-                        Read Our Blog
+                    <a href="{{ route('posts.index') }}" class="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center">
+                        <span>Explore Content</span>
+                        <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
                     </a>
                     @if(!auth()->check())
-                        <a href="/login" class="px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg font-semibold hover:shadow-lg transition inline-block text-center border border-gray-200 dark:border-gray-700">
-                            Admin Login
+                        <a href="/login" class="px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-lg font-semibold hover:bg-white/20 transition-all duration-300 inline-flex items-center justify-center border border-white/20">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                            </svg>
+                            Admin Dashboard
                         </a>
                     @else
-                        <a href="/admin/posts" class="px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg font-semibold hover:shadow-lg transition inline-block text-center border border-gray-200 dark:border-gray-700">
-                            Go to Dashboard
+                        <a href="/admin/posts" class="px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-lg font-semibold hover:bg-white/20 transition-all duration-300 inline-flex items-center justify-center border border-white/20">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Dashboard
                         </a>
                     @endif
                 </div>
+
+                <!-- Trust Indicators -->
+                <div class="flex items-center gap-8 pt-8">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-gray-400 text-sm">Laravel 12</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-gray-400 text-sm">Tailwind CSS 4</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-gray-400 text-sm">Livewire 3</span>
+                    </div>
+                </div>
             </div>
 
-            <!-- Right Image/Graphic -->
+            <!-- Right Interactive Demo -->
             <div class="hidden lg:flex justify-center">
                 <div class="relative w-full h-96">
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-500 rounded-3xl transform rotate-3 opacity-20"></div>
-                    <div class="absolute inset-0 bg-gradient-to-tr from-purple-400 to-blue-500 rounded-3xl transform -rotate-3 opacity-20"></div>
-                    <div class="relative h-full bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 flex flex-col items-center justify-center">
-                        <svg class="w-20 h-20 text-blue-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                        <p class="text-center text-gray-600 dark:text-gray-300">
-                            <span class="text-2xl font-bold text-blue-600">100+</span><br/>
-                            Content Pieces
-                        </p>
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-3xl transform rotate-3 backdrop-blur-sm"></div>
+                    <div class="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-pink-500/20 rounded-3xl transform -rotate-3 backdrop-blur-sm"></div>
+                    <div class="relative h-full bg-gray-900/50 backdrop-blur-xl rounded-3xl shadow-2xl p-8 flex flex-col items-center justify-center border border-gray-700">
+                        <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-3xl font-bold text-white mb-1">{{ \App\Models\Post::count() }}+</p>
+                            <p class="text-gray-400">Content Pieces</p>
+                            <div class="mt-4 flex gap-2">
+                                <span class="px-3 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">Live</span>
+                                <span class="px-3 py-1 bg-blue-500/20 text-blue-400 text-xs rounded-full">Fast</span>
+                                <span class="px-3 py-1 bg-purple-500/20 text-purple-400 text-xs rounded-full">Secure</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -58,7 +110,59 @@
     </div>
 </section>
 
-<!-- Features Section -->
+<!-- Technology Stack Section -->
+<section class="py-20 bg-gray-900/50 backdrop-blur-sm border-y border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-white mb-4">Built with Modern Technology</h2>
+            <p class="text-xl text-gray-400">Powered by the latest web development stack</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="text-center group">
+                <div class="w-16 h-16 bg-red-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-red-500/20 transition-colors">
+                    <svg class="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M13.938 7.062L16 12l-2.062 4.938L13.062 12l.876-4.938zM13.062 12l.876-4.938L16 12l-2.062 4.938L13.062 12z"/>
+                        <path d="M9.062 7.062L7 12l2.062 4.938L10.938 12L9.062 7.062zM10.938 12L9.062 7.062L7 12l2.062 4.938L10.938 12z"/>
+                        <path d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10z"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-1">Laravel 12</h3>
+                <p class="text-gray-400 text-sm">PHP Framework</p>
+            </div>
+
+            <div class="text-center group">
+                <div class="w-16 h-16 bg-cyan-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-cyan-500/20 transition-colors">
+                    <svg class="w-8 h-8 text-cyan-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M13.5 5.5c1.095 0 2.09-.39 2.5-1.095V4.5h2.5v9.5c0 2.5-2 4.5-4.5 4.5s-4.5-2-4.5-4.5V4.5h2.5v-.095c.41.705 1.405 1.095 2.5 1.095 1.654 0 3-1.346 3-3s-1.346-3-3-3z"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-1">Tailwind CSS 4</h3>
+                <p class="text-gray-400 text-sm">Styling Framework</p>
+            </div>
+
+            <div class="text-center group">
+                <div class="w-16 h-16 bg-blue-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-500/20 transition-colors">
+                    <svg class="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-1">Livewire 3</h3>
+                <p class="text-gray-400 text-sm">Dynamic UI</p>
+            </div>
+
+            <div class="text-center group">
+                <div class="w-16 h-16 bg-green-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-green-500/20 transition-colors">
+                    <svg class="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-1">SQLite</h3>
+                <p class="text-gray-400 text-sm">Database</p>
+            </div>
+        </div>
+    </div>
+</section>
 <section id="about" class="py-20 bg-white dark:bg-gray-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
