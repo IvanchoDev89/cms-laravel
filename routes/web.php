@@ -21,6 +21,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/login', function () {
         return view('livewire.auth.login');
     })->name('login');
+<<<<<<< HEAD
 
     Route::post('/login', function () {
         $credentials = request()->only(['email', 'password']);
@@ -35,6 +36,8 @@ Route::middleware(['guest'])->group(function () {
             'email' => 'The provided credentials do not match our records.',
         ])->withInput(request()->only('email'));
     })->name('login.store');
+=======
+>>>>>>> 6227176 (feat: v1.2.0 - Complete Multi-Tenant CMS with Advanced Features)
 
     // Registration Routes
     Route::get('/register', function () {
@@ -63,7 +66,7 @@ Route::middleware(['guest'])->group(function () {
 
     // Password Reset Routes
     Route::get('/forgot-password', function () {
-        return view('auth.forgot-password');
+        return view('livewire.auth.forgot-password');
     })->name('password.request');
 });
 
@@ -115,10 +118,11 @@ Route::post('/messages/{message}/read', [MessageController::class, 'markAsRead']
 Route::get('/messages/unread-count', [MessageController::class, 'getUnreadCount'])->name('messages.unread-count');
 
 Route::get('/dashboard', function () {
+    if (!auth()->check()) {
+        return redirect()->route('login');
+    }
     return view('dashboard-analytics');
-})
-    ->middleware(['auth'])
-    ->name('dashboard');
+})->name('dashboard');
 
 // Test routes outside auth middleware
 Route::get('test-simple', function () {
@@ -154,6 +158,11 @@ Route::middleware(['auth', 'throttle:30,1'])->group(function () {
         Route::view('test-posts-view', 'test-posts-view')->name('test.posts.view');
         Route::get('admin/media', \App\Livewire\Admin\MediaManager::class)->name('admin.media.index');
         Route::get('admin/posts', [\App\Http\Controllers\Admin\PostsController::class, 'index'])->name('admin.posts.index');
+        Route::get('admin/posts/create', [\App\Http\Controllers\Admin\PostsController::class, 'create'])->name('admin.posts.create');
+        Route::post('admin/posts', [\App\Http\Controllers\Admin\PostsController::class, 'store'])->name('admin.posts.store');
+        Route::get('admin/posts/{id}/edit', [\App\Http\Controllers\Admin\PostsController::class, 'edit'])->name('admin.posts.edit');
+        Route::put('admin/posts/{id}', [\App\Http\Controllers\Admin\PostsController::class, 'update'])->name('admin.posts.update');
+        Route::delete('admin/posts/{id}', [\App\Http\Controllers\Admin\PostsController::class, 'destroy'])->name('admin.posts.destroy');
         Route::get('admin/posts-test-simple', [\App\Http\Controllers\Admin\PostsController::class, 'index'])->name('admin.posts.test.simple');
         // Temporarily disable Volt routes that have missing components
         // Volt::route('admin/posts-test', 'posts-index-test')->name('admin.posts.test');

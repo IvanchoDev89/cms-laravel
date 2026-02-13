@@ -48,6 +48,9 @@ test('users with two factor enabled are redirected to two factor challenge', fun
     ]);
 
     $user = User::factory()->create();
+$user->two_factor_secret = 'test-secret';
+$user->two_factor_confirmed_at = now();
+$user->save();
 
     $response = $this->post(route('login.store'), [
         'email' => $user->email,

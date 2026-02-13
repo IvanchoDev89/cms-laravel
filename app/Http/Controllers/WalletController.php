@@ -14,7 +14,12 @@ class WalletController extends Controller
 
     public function index()
     {
-        $wallet = $this->walletService->getUserWallet(Auth::user());
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login');
+        }
+        
+        $wallet = $this->walletService->getUserWallet($user);
         $transactions = $this->walletService->getTransactionHistory($wallet);
 
         return view('wallet.index', compact('wallet', 'transactions'));

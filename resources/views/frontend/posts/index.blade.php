@@ -85,7 +85,7 @@
                                             </svg>
                                             <span>By {{ $post->author?->name ?? 'Admin' }}</span>
                                         </div>
-                                        <span>{{ $post->published_at->format('M d, Y') }}</span>
+                                        <span>{{ $post->published_at?->format('M d, Y') ?? 'Draft' }}</span>
                                     </div>
                                     
                                     <!-- Link -->

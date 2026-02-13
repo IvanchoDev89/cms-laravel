@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('plan_id')->constrained()->onDelete('cascade');
+            $table->foreignId('plan_id')->constrained('subscription_plans')->onDelete('cascade');
             $table->string('status'); // active, cancelled, expired, suspended
             $table->decimal('amount_paid', 10, 2);
             $table->string('currency', 3)->default('USD');
