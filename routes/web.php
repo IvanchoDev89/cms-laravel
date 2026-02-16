@@ -21,9 +21,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/login', function () {
         return view('livewire.auth.login');
     })->name('login');
-<<<<<<< HEAD
-
-    Route::post('/login', function () {
+Route::post('/login', function () {
         $credentials = request()->only(['email', 'password']);
 
         if (auth()->attempt($credentials, request()->boolean('remember'))) {
@@ -36,8 +34,6 @@ Route::middleware(['guest'])->group(function () {
             'email' => 'The provided credentials do not match our records.',
         ])->withInput(request()->only('email'));
     })->name('login.store');
-=======
->>>>>>> 6227176 (feat: v1.2.0 - Complete Multi-Tenant CMS with Advanced Features)
 
     // Registration Routes
     Route::get('/register', function () {

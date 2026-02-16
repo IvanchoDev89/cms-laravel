@@ -112,7 +112,7 @@ Un CMS moderno y profesional basado en Laravel 12 con Livewire 3, Volt, Tailwind
 | Componente | Tecnología | Versión |
 |---|---|---|
 | **Backend** | Laravel | 12 |
-| **PHP** | PHP | 8.2+ |
+| **PHP** | PHP | 8.5+ |
 | **Frontend** | Livewire + Volt | 3 |
 | **Estilos** | Tailwind CSS | 4 |
 | **Base de Datos** | SQLite/PostgreSQL | Ambas |
@@ -126,7 +126,7 @@ Un CMS moderno y profesional basado en Laravel 12 con Livewire 3, Volt, Tailwind
 ## 🚀 Instalación Rápida
 
 ### Requisitos Previos
-- PHP 8.2 o superior
+- PHP 8.5 o superior
 - Composer
 - Node.js 18+ (para assets)
 - Git

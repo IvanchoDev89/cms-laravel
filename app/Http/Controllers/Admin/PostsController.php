@@ -24,9 +24,6 @@ class PostsController extends Controller
             ]);
         }
     }
-<<<<<<< HEAD
-
-=======
     
     public function create()
     {
@@ -88,7 +85,6 @@ class PostsController extends Controller
             ->with('success', 'Post deleted successfully!');
     }
     
->>>>>>> 6227176 (feat: v1.2.0 - Complete Multi-Tenant CMS with Advanced Features)
     public function test()
     {
         return view('admin.posts.posts-standalone');
