@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PostsController extends Controller
 {
@@ -42,7 +43,7 @@ class PostsController extends Controller
             'title' => $validated['title'],
             'content' => $validated['content'],
             'status' => $validated['status'],
-            'slug' => \Str::slug($validated['title']),
+            'slug' => Str::slug($validated['title']),
             'author_id' => auth()->id(),
         ]);
         

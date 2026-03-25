@@ -21,3 +21,16 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Archivos de cookies temporales
+cookies*.txt
+
+# Archivos de backup
+*~
+*.bak
+*.swp
+*.swo
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db

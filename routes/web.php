@@ -120,14 +120,6 @@ Route::get('/dashboard', function () {
     return view('dashboard-analytics');
 })->name('dashboard');
 
-// Test routes outside auth middleware
-Route::get('test-simple', function () {
-    return 'Simple test route working';
-});
-
-Route::get('admin/posts-debug', [\App\Http\Controllers\Admin\PostsController::class, 'index'])->name('admin.posts.debug');
-Route::get('admin/posts-test-view', [\App\Http\Controllers\Admin\PostsController::class, 'test'])->name('admin.posts.test.view');
-
 Route::middleware(['auth', 'throttle:30,1'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
@@ -148,10 +140,8 @@ Route::middleware(['auth', 'throttle:30,1'])->group(function () {
 
     // CMS Routes - Enhanced with rate limiting
     Route::middleware('throttle:60,1')->group(function () {
-        Route::view('admin/dashboard', 'dashboard-enhanced')->name('admin.dashboard');
-        Route::view('admin/settings', 'dashboard')->name('admin.settings.index');
-        Route::view('admin/test', 'dashboard-test')->name('admin.test');
-        Route::view('test-posts-view', 'test-posts-view')->name('test.posts.view');
+        Route::view('admin/dashboard', 'dashboard-analytics')->name('admin.dashboard');
+        Route::view('admin/settings', 'dashboard-analytics')->name('admin.settings.index');
         Route::get('admin/media', \App\Livewire\Admin\MediaManager::class)->name('admin.media.index');
         Route::get('admin/posts', [\App\Http\Controllers\Admin\PostsController::class, 'index'])->name('admin.posts.index');
         Route::get('admin/posts/create', [\App\Http\Controllers\Admin\PostsController::class, 'create'])->name('admin.posts.create');
@@ -159,16 +149,5 @@ Route::middleware(['auth', 'throttle:30,1'])->group(function () {
         Route::get('admin/posts/{id}/edit', [\App\Http\Controllers\Admin\PostsController::class, 'edit'])->name('admin.posts.edit');
         Route::put('admin/posts/{id}', [\App\Http\Controllers\Admin\PostsController::class, 'update'])->name('admin.posts.update');
         Route::delete('admin/posts/{id}', [\App\Http\Controllers\Admin\PostsController::class, 'destroy'])->name('admin.posts.destroy');
-        Route::get('admin/posts-test-simple', [\App\Http\Controllers\Admin\PostsController::class, 'index'])->name('admin.posts.test.simple');
-        // Temporarily disable Volt routes that have missing components
-        // Volt::route('admin/posts-test', 'posts-index-test')->name('admin.posts.test');
-        // Volt::route('admin/posts/create', 'post-form-page')->name('admin.posts.create');
-        // Volt::route('admin/posts/{id}/edit', 'post-form-page')->name('admin.posts.edit');
-        // Volt::route('admin/pages', 'pages-index')->name('admin.pages.index');
-        // Volt::route('admin/pages/create', 'page-form-page')->name('admin.pages.create');
-        // Volt::route('admin/pages/{id}/edit', 'page-form-page')->name('admin.pages.edit');
-        // Volt::route('admin/users', 'users-index')->name('admin.users.index');
-        // Volt::route('admin/users/create', 'user-form-page')->name('admin.users.create');
-        // Volt::route('admin/users/{id}/edit', 'user-form-page')->name('admin.users.edit');
     });
 });
