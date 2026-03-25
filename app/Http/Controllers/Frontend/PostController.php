@@ -40,12 +40,12 @@ class PostController extends Controller
         } catch (\Exception $e) {
             // ignore logging errors to avoid breaking frontend
         }
-        // Backward-compatible increment if the column exists
-        if (\Illuminate\Support\Facades\Schema::hasColumn('posts', 'view_count')) {
-            $post->increment('view_count');
-        }
+
+        // Increment view count
+        $post->increment('view_count');
         $relatedPosts = Post::where('status', 'published')
             ->where('id', '!=', $post->id)
+            ->with(['author', 'taxonomies'])
             ->latest('published_at')
             ->limit(3)
             ->get();
