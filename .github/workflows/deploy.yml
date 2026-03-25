@@ -1,0 +1,186 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'production' }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer:v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: |
+          composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+          npm ci
+
+      - name: Build Assets
+        run: npm run build
+
+      - name: Prepare Deployment Package
+        run: |
+          # Create deployment artifact excluding dev files
+          rsync -av --exclude='.git' \
+                    --exclude='.github' \
+                    --exclude='node_modules' \
+                    --exclude='tests' \
+                    --exclude='.env' \
+                    --exclude='storage/logs/*' \
+                    --exclude='storage/framework/cache/*' \
+                    --exclude='storage/framework/sessions/*' \
+                    --exclude='storage/framework/views/*' \
+                    ./ ./deploy/
+          
+          # Copy production-ready .env.example as template
+          cp .env.example deploy/.env.example
+          
+          # Create deployment info file
+          echo "DEPLOY_COMMIT=${{ github.sha }}" > deploy/DEPLOY_INFO
+          echo "DEPLOY_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> deploy/DEPLOY_INFO
+          echo "DEPLOY_BRANCH=${{ github.ref_name }}" >> deploy/DEPLOY_INFO
+
+      - name: Upload Deployment Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-package
+          path: deploy/
+          retention-days: 5
+
+      # SSH Deployment to VPS (optional - uncomment and configure)
+      # - name: Deploy to VPS
+      #   if: github.ref == 'refs/heads/main'
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     script: |
+      #       cd /var/www/html
+      #       git pull origin main
+      #       composer install --no-dev --optimize-autoloader
+      #       php artisan migrate --force
+      #       php artisan optimize
+      #       php artisan config:cache
+      #       php artisan route:cache
+      #       php artisan view:cache
+      #       npm ci
+      #       npm run build
+      #       sudo systemctl restart php8.4-fpm
+      #       sudo systemctl restart nginx
+
+      # Laravel Forge Deployment (optional - uncomment and configure)
+      # - name: Trigger Forge Deployment
+      #   if: github.ref == 'refs/heads/main'
+      #   run: |
+      #     curl -X POST ${{ secrets.FORGE_DEPLOY_HOOK }} \
+      #       -H "Content-Type: application/json" \
+      #       -d '{"ref":"${{ github.sha }}"}'
+
+      # Railway/Render Deployment (optional - uncomment and configure)
+      # - name: Deploy to Railway
+      #   if: github.ref == 'refs/heads/main'
+      #   run: |
+      #     npm install -g @railway/cli
+      #     railway login --token ${{ secrets.RAILWAY_TOKEN }}
+      #     railway up
+
+      # Netlify Deployment for frontend (optional)
+      # - name: Deploy to Netlify
+      #   if: github.ref == 'refs/heads/main'
+      #   uses: nwtgck/actions-netlify@v3.0
+      #   with:
+      #     publish-dir: './public'
+      #     production-branch: main
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     deploy-message: "Deploy from GitHub Actions"
+      #   env:
+      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+  post-deploy:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+
+      - name: Cache Composer Dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Dependencies
+        run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
+      # Health Check (requires deployment URL)
+      # - name: Health Check
+      #   run: |
+      #     curl -f ${{ secrets.APP_URL }}/health || exit 1
+      #     curl -f ${{ secrets.APP_URL }}/up || exit 1
+
+      - name: Notify Deployment Success
+        if: success()
+        run: |
+          echo "✅ Deployment completed successfully!"
+          echo "Commit: ${{ github.sha }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Time: $(date -u)"
+
+      - name: Create Deployment Status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: deployment } = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha,
+              environment: '${{ github.event.inputs.environment || 'production' }}',
+              auto_merge: false,
+              required_contexts: []
+            });
+            
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: deployment.id,
+              state: '${{ job.status }}' === 'success' ? 'success' : 'failure',
+              environment_url: process.env.APP_URL || '',
+              log_url: `https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}`
+            });
