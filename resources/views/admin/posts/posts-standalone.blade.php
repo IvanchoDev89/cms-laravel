@@ -1,10 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.admin-sidebar')
 
-@section('title', 'Posts Management')
+@section('title', 'Posts - Admin')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-7xl mx-auto">
+<div class="space-y-6">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                 <div>
