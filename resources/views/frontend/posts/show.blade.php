@@ -1,76 +1,79 @@
 @extends('layouts.app')
 
-@section('title', $post->title . ' - Blog')
+@section('title', $post->title . ' - ' . config('app.name', 'Blog'))
 @section('description', $post->excerpt ?? Str::limit(strip_tags($post->content), 160))
 
 @section('content')
 
 <!-- Article Header -->
-<article class="bg-white dark:bg-gray-800 shadow-lg">
+<article class="bg-white dark:bg-gray-900">
     <!-- Featured Image -->
-    @if($post->media->first())
-        <img src="{{ Storage::url($post->media->first()->path) }}" alt="{{ $post->title }}" class="w-full h-[500px] object-cover">
-    @else
-        <div class="w-full h-[500px] bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center">
-            <span class="text-white text-9xl">📝</span>
+    <div class="relative w-full h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden">
+        @if($post->media->first())
+            <img src="{{ Storage::url($post->media->first()->path) }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+        @else
+            <div class="w-full h-full bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-700 flex items-center justify-center">
+                <svg class="w-32 h-32 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+            </div>
+        @endif
+        
+        <!-- Overlay Content -->
+        <div class="absolute bottom-0 left-0 right-0 p-6 md:p-12">
+            <div class="max-w-4xl mx-auto">
+                <!-- Breadcrumb -->
+                <nav class="flex items-center gap-2 text-sm text-white/80 mb-4">
+                    <a href="/" class="hover:text-white">Home</a>
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    <a href="{{ route('posts.index') }}" class="hover:text-white">Blog</a>
+                </nav>
+                
+                <!-- Categories -->
+                <div class="flex flex-wrap gap-2 mb-4">
+                    @foreach($post->taxonomies as $tax)
+                        <a href="{{ route('posts.index', ['category' => $tax->slug]) }}" class="inline-block px-3 py-1 bg-white/20 backdrop-blur text-white text-sm rounded-full hover:bg-white/30 transition font-medium">
+                            {{ $tax->name }}
+                        </a>
+                    @endforeach
+                </div>
+                
+                <!-- Title -->
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">{{ $post->title }}</h1>
+                
+                <!-- Meta Information -->
+                <div class="flex flex-wrap gap-4 text-white/80 text-sm">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white font-medium">
+                            {{ substr($post->author?->name ?? 'A', 0, 1) }}
+                        </div>
+                        <span>By <strong class="text-white">{{ $post->author?->name ?? 'Admin' }}</strong></span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v2h16V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2V7z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>{{ $post->published_at->format('F j, Y') }}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>{{ $post->view_count }} views</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.606 12.97a.75.75 0 01-.992 1.084A9 9 0 1110 18a9.003 9.003 0 01-5.394-1.946.75.75 0 01.992-1.084A7.5 7.5 0 1010 16.5a7.5 7.5 0 01-5.394-2.53z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>{{ ceil(str_word_count($post->content) / 200) }} min read</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    @endif
-
-    <!-- Article Content -->
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <!-- Breadcrumb -->
-        <nav class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-6">
-            <a href="/" class="hover:text-gray-900 dark:hover:text-white">Home</a>
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-            </svg>
-            <a href="{{ route('posts.index') }}" class="hover:text-gray-900 dark:hover:text-white">Blog</a>
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-            </svg>
-            <span class="text-gray-900 dark:text-white font-semibold">{{ Str::limit($post->title, 50) }}</span>
-        </nav>
-
-        <!-- Categories -->
-        <div class="flex flex-wrap gap-2 mb-4">
-            @foreach($post->taxonomies as $tax)
-                <a href="{{ route('posts.index', ['category' => $tax->slug]) }}" class="inline-block px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition font-semibold">
-                    {{ $tax->name }}
-                </a>
-            @endforeach
-        </div>
-
-        <!-- Title -->
-        <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-6">{{ $post->title }}</h1>
-
-        <!-- Meta Information -->
-        <div class="flex flex-wrap gap-6 text-gray-600 dark:text-gray-400 mb-8 pb-8 border-b-2 border-gray-200 dark:border-gray-700">
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2z" clip-rule="evenodd"/>
-                </svg>
-                <span>By <strong class="text-gray-900 dark:text-white">{{ $post->author?->name ?? 'Admin' }}</strong></span>
-            </div>
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v2h16V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2V7z" clip-rule="evenodd"/>
-                </svg>
-                <span>{{ $post->published_at->format('F j, Y') }}</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
-                </svg>
-                <span>{{ $post->view_count }} views</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M4.606 12.97a.75.75 0 01-.992 1.084A9 9 0 1110 18a9.003 9.003 0 01-5.394-1.946.75.75 0 01.992-1.084A7.5 7.5 0 1010 16.5a7.5 7.5 0 01-5.394-2.53z" clip-rule="evenodd"/>
-                </svg>
-                <span>{{ ceil(str_word_count($post->content) / 200) }} min read</span>
-            </div>
-        </div>
+    </div>
 
         <!-- Excerpt -->
         @if($post->excerpt)
