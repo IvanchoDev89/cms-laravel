@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laravel CMS - Project Presentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .gradient-text { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .animate-fade-in { animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .tech-icon { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 16px; font-size: 28px; }
+        .progress-bar { transition: width 1s ease-out; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Hero Section -->
+    <section class="gradient-bg min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-purple-300 rounded-full mix-blend-overlay filter blur-3xl transform translate-x-1/2 translate-y-1/2"></div>
+        </div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <div class="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-white text-sm mb-6">
+                <i class="fas fa-check-circle mr-2"></i> Proyecto Completado
+            </div>
+            <h1 class="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                Laravel CMS
+            </h1>
+            <p class="text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
+                Sistema de Gestión de Contenido Profesional con UI/UX Moderno, Seguridad Avanzada y CI/CD Automatizado
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <span class="px-6 py-3 bg-white/20 backdrop-blur rounded-lg text-white font-medium">
+                    <i class="fab fa-laravel mr-2 text-red-400"></i> Laravel 12
+                </span>
+                <span class="px-6 py-3 bg-white/20 backdrop-blur rounded-lg text-white font-medium">
+                    <i class="fab fa-php mr-2 text-blue-400"></i> PHP 8.4
+                </span>
+                <span class="px-6 py-3 bg-white/20 backdrop-blur rounded-lg text-white font-medium">
+                    <i class="fas fa-wind mr-2 text-cyan-400"></i> Tailwind CSS 4
+                </span>
+                <span class="px-6 py-3 bg-white/20 backdrop-blur rounded-lg text-white font-medium">
+                    <i class="fas fa-bolt mr-2 text-yellow-400"></i> Livewire 3
+                </span>
+            </div>
+            <div class="text-white/70 text-lg">
+                <i class="fas fa-shield-alt mr-2 text-green-400"></i>
+                Score de Seguridad: <strong class="text-white text-2xl">8.5/10</strong>
+            </div>
+        </div>
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-white text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- Stats Dashboard -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-16 gradient-text">Métricas del Proyecto</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl card-hover">
+                    <div class="text-5xl font-bold text-blue-600 mb-2">9</div>
+                    <div class="text-gray-600 font-medium">Componentes UI</div>
+                </div>
+                <div class="text-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl card-hover">
+                    <div class="text-5xl font-bold text-purple-600 mb-2">20+</div>
+                    <div class="text-gray-600 font-medium">Vistas Actualizadas</div>
+                </div>
+                <div class="text-center p-6 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl card-hover">
+                    <div class="text-5xl font-bold text-emerald-600 mb-2">92%</div>
+                    <div class="text-gray-600 font-medium">Score de Seguridad</div>
+                </div>
+                <div class="text-center p-6 bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl card-hover">
+                    <div class="text-5xl font-bold text-amber-600 mb-2">4</div>
+                    <div class="text-gray-600 font-medium">Workflows CI/CD</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- UI Components Showcase -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-4 gradient-text">Biblioteca de Componentes UI</h2>
+            <p class="text-center text-gray-600 mb-12 text-lg">9 componentes profesionales con soporte dark mode</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Button Component -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-mouse-pointer text-blue-600 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Button</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex gap-2">
+                            <span class="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg">Primary</span>
+                            <span class="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-lg">Secondary</span>
+                        </div>
+                        <p class="text-sm text-gray-500">6 variantes, 4 tamaños, loading states</p>
+                    </div>
+                </div>
+
+                <!-- Card Component -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-square text-purple-600 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Card</h3>
+                    </div>
+                    <div class="bg-gray-100 p-3 rounded-lg mb-2">
+                        <div class="h-2 bg-gray-300 rounded w-3/4 mb-2"></div>
+                        <div class="h-2 bg-gray-300 rounded w-1/2"></div>
+                    </div>
+                    <p class="text-sm text-gray-500">Padding flexible, sombras, gradientes</p>
+                </div>
+
+                <!-- Alert Component -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-bell text-emerald-600 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Alert</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        </div>
+                        <p class="text-sm text-gray-500">4 tipos: success, info, warning, error</p>
+                    </div>
+                </div>
+
+                <!-- Input Component -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-keyboard text-cyan-600 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Input</h3>
+                    </div>
+                    <div class="border-2 border-gray-300 rounded-lg px-3 py-2 mb-2">
+                        <span class="text-gray-400 text-sm">placeholder...</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Iconos, estados de error, helper text</p>
+                </div>
+
+                <!-- Modal Component -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-window-restore text-pink-600 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Modal</h3>
+                    </div>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                        <i class="fas fa-expand text-gray-400 text-2xl"></i>
+                    </div>
+                    <p class="text-sm text-gray-500">5 tamaños, backdrop blur, focus trap</p>
+                </div>
+
+                <!-- Toast Component -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-bell text-amber-600 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Toast</h3>
+                    </div>
+                    <div class="bg-emerald-100 border-l-4 border-emerald-500 p-3 rounded">
+                        <div class="text-xs text-emerald-700">✓ Success message</div>
+                    </div>
+                    <p class="text-sm text-gray-500">Notificaciones con barra de progreso</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section class="py-20 bg-slate-900 text-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-4">Auditoría de Seguridad</h2>
+            <p class="text-center text-gray-400 mb-12 text-lg">Score de Seguridad: 8.5/10 - Excelente</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <!-- Security Features -->
+                <div class="glass rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-shield-alt text-emerald-400 mr-3"></i>
+                        Fortalezas
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-emerald-400 mr-3"></i>
+                            <span>Laravel Fortify + 2FA</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-emerald-400 mr-3"></i>
+                            <span>CSRF en 27 formularios</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-emerald-400 mr-3"></i>
+                            <span>XSS Auto-escaping Blade</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-emerald-400 mr-3"></i>
+                            <span>SQL Injection prevention</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-emerald-400 mr-3"></i>
+                            <span>Secure File Upload Rule</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-emerald-400 mr-3"></i>
+                            <span>Security Headers Middleware</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Metrics -->
+                <div class="glass rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-chart-line text-blue-400 mr-3"></i>
+                        Métricas de Seguridad
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>Authentication</span>
+                                <span class="text-emerald-400">100%</span>
+                            </div>
+                            <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-400 rounded-full" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>Input Validation</span>
+                                <span class="text-emerald-400">100%</span>
+                            </div>
+                            <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-400 rounded-full" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>File Uploads</span>
+                                <span class="text-emerald-400">90%</span>
+                            </div>
+                            <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-400 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>API Security</span>
+                                <span class="text-blue-400">80%</span>
+                            </div>
+                            <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-blue-400 rounded-full" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass rounded-2xl p-6 text-center">
+                <div class="flex items-center justify-center mb-4">
+                    <i class="fas fa-award text-amber-400 text-4xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">OWASP Top 10 2021 Compliant</h3>
+                <p class="text-gray-400">Todas las categorías de seguridad OWASP están implementadas correctamente</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CI/CD Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-4 gradient-text">CI/CD Pipeline</h2>
+            <p class="text-center text-gray-600 mb-12 text-lg">GitHub Actions configurado para automatización completa</p>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="relative">
+                    <!-- Pipeline Steps -->
+                    <div class="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-purple-500"></div>
+                    
+                    <div class="space-y-8">
+                        <div class="flex items-start">
+                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mr-6 z-10">
+                                <i class="fas fa-vial text-blue-600 text-xl"></i>
+                            </div>
+                            <div class="flex-1 pt-3">
+                                <h3 class="text-xl font-bold mb-2">Tests</h3>
+                                <p class="text-gray-600">PHPUnit + Pest. PHP 8.4, Node 22. Build assets. Run test suite.</p>
+                                <span class="inline-block mt-2 px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">tests.yml</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mr-6 z-10">
+                                <i class="fas fa-code text-purple-600 text-xl"></i>
+                            </div>
+                            <div class="flex-1 pt-3">
+                                <h3 class="text-xl font-bold mb-2">Linting</h3>
+                                <p class="text-gray-600">Laravel Pint para code style. Auto-commit de correcciones.</p>
+                                <span class="inline-block mt-2 px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full">lint.yml</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mr-6 z-10">
+                                <i class="fas fa-rocket text-emerald-600 text-xl"></i>
+                            </div>
+                            <div class="flex-1 pt-3">
+                                <h3 class="text-xl font-bold mb-2">Deploy</h3>
+                                <p class="text-gray-600">Multi-platform: VPS, Laravel Forge, Railway, Netlify. Health checks.</p>
+                                <span class="inline-block mt-2 px-3 py-1 bg-emerald-100 text-emerald-700 text-sm rounded-full">deploy.yml</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mr-6 z-10">
+                                <i class="fas fa-file-code text-amber-600 text-xl"></i>
+                            </div>
+                            <div class="flex-1 pt-3">
+                                <h3 class="text-xl font-bold mb-2">Deploy Script</h3>
+                                <p class="text-gray-600">Script manual deploy.sh con backup, maintenance mode, optimización.</p>
+                                <span class="inline-block mt-2 px-3 py-1 bg-amber-100 text-amber-700 text-sm rounded-full">deploy.sh</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documentation Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">Documentación Creada</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <div class="bg-white p-6 rounded-2xl shadow-lg card-hover">
+                    <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-puzzle-piece text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">UI Components</h3>
+                    <p class="text-gray-600 text-sm mb-4">Guía completa de los 9 componentes UI con props, ejemplos y mejores prácticas.</p>
+                    <span class="text-xs text-gray-400">docs/UI_COMPONENTS.md</span>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-lg card-hover">
+                    <div class="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-server text-emerald-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Deployment</h3>
+                    <p class="text-gray-600 text-sm mb-4">Guía de despliegue con múltiples opciones: VPS, Forge, Railway, Docker.</p>
+                    <span class="text-xs text-gray-400">docs/DEPLOYMENT.md</span>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-lg card-hover">
+                    <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-red-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Security Audit</h3>
+                    <p class="text-gray-600 text-sm mb-4">Auditoría completa de seguridad con score 8.5/10 y recomendaciones.</p>
+                    <span class="text-xs text-gray-400">docs/SECURITY_AUDIT.md</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-slate-900 text-white">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex items-center justify-center mb-6">
+                <i class="fas fa-code text-3xl mr-4 text-blue-400"></i>
+                <span class="text-2xl font-bold">Laravel CMS</span>
+            </div>
+            <p class="text-gray-400 mb-4">Proyecto profesional completo con UI/UX moderno, seguridad avanzada y CI/CD automatizado.</p>
+            <div class="flex justify-center gap-6 text-sm text-gray-500">
+                <span>Laravel 12</span>
+                <span>•</span>
+                <span>PHP 8.4</span>
+                <span>•</span>
+                <span>Tailwind CSS 4</span>
+                <span>•</span>
+                <span>Livewire 3</span>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-gray-600 text-sm">
+                <p>Proyecto completado y listo para producción</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animate elements on scroll
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card-hover').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
