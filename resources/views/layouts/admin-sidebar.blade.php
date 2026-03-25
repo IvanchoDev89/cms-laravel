@@ -237,6 +237,9 @@
     </main>
     </div>
     
+    <!-- Toast Notifications -->
+    @include('components.ui.toast')
+    
     @stack('scripts')
 </body>
 </html>
