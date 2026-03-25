@@ -1,15 +1,20 @@
-@extends('layouts.admin')
+@extends('layouts.admin-sidebar')
 
-@section('title', 'Profile Settings')
+@section('title', 'Profile - Admin')
 
 @section('content')
-<div class="p-6 space-y-6">
+<div x-data="{ saving: false, avatarModal: false }" class="space-y-6">
+    
     <!-- Header -->
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Profile Settings</h1>
-            <p class="text-gray-600 dark:text-gray-400 mt-1">Manage your account information and preferences</p>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage your account information and preferences</p>
         </div>
+        
+        <x-ui.button variant="primary" icon='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>'>
+            Save Changes
+        </x-ui.button>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
