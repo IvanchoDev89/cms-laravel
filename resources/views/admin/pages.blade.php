@@ -1,27 +1,20 @@
-@extends('layouts.admin')
+@extends('layouts.admin-sidebar')
 
-@section('title', 'Pages')
+@section('title', 'Pages - Admin')
 
 @section('content')
-<div class="p-6 space-y-6">
+<div x-data="{ activeTab: 'all', search: '', deleteModal: false, deletePageId: null }" class="space-y-6">
+    
     <!-- Header -->
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Pages</h1>
-                    <p class="text-gray-600 dark:text-gray-400 mt-1">Manage your static pages</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                        </svg>
-                        Add New Page
-                    </button>
-                </div>
-            </div>
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Pages</h1>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage your static pages and content</p>
         </div>
+        
+        <x-ui.button variant="primary" icon='<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>'>
+            Add New Page
+        </x-ui.button>
     </div>
 
     <!-- Pages Stats -->
